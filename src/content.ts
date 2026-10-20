@@ -77,6 +77,7 @@ import { ExtensionMessage } from './types';
 
   function handlePointerMove(e: MouseEvent): void {
     if (!isInspectionActive) return;
+    if (tooltipCard && tooltipCard.getPinned()) return;
 
     // Ignore events on our own shadow root host or any element inside it
     if (hostEl) {
@@ -106,10 +107,40 @@ import { ExtensionMessage } from './types';
     }
   }
 
+  function handleElementClick(e: MouseEvent): void {
+    if (!isInspectionActive) return;
+
+    // Ignore clicks inside extension UI
+    if (hostEl) {
+      const path = e.composedPath ? e.composedPath() : [];
+      if (path.includes(hostEl) || (shadowRoot && path.some(p => p instanceof Node && shadowRoot!.contains(p)))) {
+        return;
+      }
+    }
+
+    // Lock/pin inspection card so user can interact and scroll inside the tooltip!
+    if (tooltipCard) {
+      const newPinned = !tooltipCard.getPinned();
+      tooltipCard.setPinned(newPinned);
+      if (newPinned) {
+        showToast('Element Locked! You can now scroll info or drag card.');
+      } else {
+        showToast('Element Unlocked. Hover to inspect another.');
+      }
+      e.preventDefault();
+      e.stopPropagation();
+    }
+  }
+
   function handleKeyDown(e: KeyboardEvent): void {
     // ESC disables inspection or unpins
     if (e.key === 'Escape' && isInspectionActive) {
-      toggleInspection(false);
+      if (tooltipCard && tooltipCard.getPinned()) {
+        tooltipCard.setPinned(false);
+        showToast('Element Unlocked');
+      } else {
+        toggleInspection(false);
+      }
     }
     // 'p' or 'P' toggles pin when active
     if ((e.key === 'p' || e.key === 'P') && isInspectionActive) {
@@ -162,12 +193,14 @@ import { ExtensionMessage } from './types';
   function enableInspectionListeners(): void {
     window.addEventListener('pointermove', handlePointerMove, { passive: true, capture: true });
     window.addEventListener('mousemove', handlePointerMove, { passive: true, capture: true });
+    window.addEventListener('click', handleElementClick, { capture: true });
     window.addEventListener('keydown', handleKeyDown, { capture: true });
   }
 
   function disableInspectionListeners(): void {
     window.removeEventListener('pointermove', handlePointerMove, { capture: true });
     window.removeEventListener('mousemove', handlePointerMove, { capture: true });
+    window.removeEventListener('click', handleElementClick, { capture: true });
     window.removeEventListener('keydown', handleKeyDown, { capture: true });
     hoveredElement = null;
   }

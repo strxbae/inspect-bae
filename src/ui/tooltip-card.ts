@@ -5,6 +5,15 @@ export class TooltipCard {
   private isPinned = false;
   private currentData: InspectedElementData | null = null;
   private onCopyCallback?: (text: string, label: string) => void;
+  private userHasMovedCard = false;
+  private currentCorner: 'bottom-right' | 'bottom-left' | 'top-right' | 'top-left' = 'bottom-right';
+
+  // Dragging state
+  private isDragging = false;
+  private dragStartX = 0;
+  private dragStartY = 0;
+  private cardStartX = 0;
+  private cardStartY = 0;
 
   constructor(shadowRoot: ShadowRoot, onCopy?: (text: string, label: string) => void) {
     this.onCopyCallback = onCopy;
@@ -13,13 +22,31 @@ export class TooltipCard {
     this.card.style.display = 'none';
 
     shadowRoot.appendChild(this.card);
+    this.initCardDragging();
+    this.applyCornerPosition(this.currentCorner);
+  }
+
+  public getPinned(): boolean {
+    return this.isPinned;
+  }
+
+  public setPinned(pinned: boolean): void {
+    this.isPinned = pinned;
+    this.card.classList.toggle('ib-pinned', this.isPinned);
+    const pinBtn = this.card.querySelector('.ib-pin-btn');
+    if (pinBtn) {
+      pinBtn.classList.toggle('ib-active', this.isPinned);
+      pinBtn.setAttribute('title', this.isPinned ? 'Locked (Click to unlock)' : 'Click or click element to lock');
+    }
   }
 
   public update(data: InspectedElementData, targetElement: HTMLElement): void {
     if (this.isPinned) return;
     this.currentData = data;
     this.render();
-    this.positionCard(targetElement);
+    if (!this.userHasMovedCard) {
+      this.applyCornerPosition(this.currentCorner);
+    }
     this.card.style.display = 'flex';
   }
 
@@ -30,41 +57,97 @@ export class TooltipCard {
   }
 
   public togglePin(): void {
-    this.isPinned = !this.isPinned;
-    this.card.classList.toggle('ib-pinned', this.isPinned);
+    this.setPinned(!this.isPinned);
   }
 
-  private positionCard(targetElement: HTMLElement): void {
-    const rect = targetElement.getBoundingClientRect();
+  private applyCornerPosition(corner: 'bottom-right' | 'bottom-left' | 'top-right' | 'top-left'): void {
+    this.currentCorner = corner;
+    const margin = 24;
     const cardWidth = 380;
-    const cardHeight = Math.min(this.card.offsetHeight || 420, 500);
-    const viewportWidth = window.innerWidth;
-    const viewportHeight = window.innerHeight;
-    const margin = 16;
+    const cardHeight = Math.min(this.card.offsetHeight || 440, 500);
+    const viewportWidth = window.innerWidth || 1200;
+    const viewportHeight = window.innerHeight || 800;
 
-    let left = rect.right + margin;
-    let top = rect.top;
+    let left = viewportWidth - cardWidth - margin;
+    let top = viewportHeight - cardHeight - margin;
 
-    // If right runs out of screen space, place to the left or below
-    if (left + cardWidth > viewportWidth - margin) {
-      left = rect.left - cardWidth - margin;
-    }
-
-    if (left < margin) {
-      left = Math.max(margin, Math.min(viewportWidth - cardWidth - margin, rect.left));
-      top = rect.bottom + margin;
-    }
-
-    // Clamp vertical placement inside viewport
-    if (top + cardHeight > viewportHeight - margin) {
-      top = Math.max(margin, viewportHeight - cardHeight - margin);
-    }
-    if (top < margin) {
+    if (corner === 'bottom-left') {
+      left = margin;
+      top = viewportHeight - cardHeight - margin;
+    } else if (corner === 'top-right') {
+      left = viewportWidth - cardWidth - margin;
+      top = margin;
+    } else if (corner === 'top-left') {
+      left = margin;
       top = margin;
     }
 
-    this.card.style.top = `${Math.round(top)}px`;
     this.card.style.left = `${Math.round(left)}px`;
+    this.card.style.top = `${Math.round(top)}px`;
+    this.card.style.right = 'auto';
+    this.card.style.bottom = 'auto';
+  }
+
+  private initCardDragging(): void {
+    const onPointerMove = (e: PointerEvent) => {
+      if (!this.isDragging) return;
+      const dx = e.clientX - this.dragStartX;
+      const dy = e.clientY - this.dragStartY;
+
+      let newLeft = this.cardStartX + dx;
+      let newTop = this.cardStartY + dy;
+
+      const pad = 12;
+      const maxX = (window.innerWidth || 1200) - (this.card.offsetWidth || 380) - pad;
+      const maxY = (window.innerHeight || 800) - (this.card.offsetHeight || 440) - pad;
+
+      newLeft = Math.max(pad, Math.min(maxX, newLeft));
+      newTop = Math.max(pad, Math.min(maxY, newTop));
+
+      this.card.style.left = `${newLeft}px`;
+      this.card.style.top = `${newTop}px`;
+      this.userHasMovedCard = true;
+    };
+
+    const onPointerUp = () => {
+      if (!this.isDragging) return;
+      this.isDragging = false;
+      window.removeEventListener('pointermove', onPointerMove, { capture: true });
+      window.removeEventListener('pointerup', onPointerUp, { capture: true });
+
+      // Detect nearest corner (bottom-right, bottom-left, top-right, top-left)
+      const rect = this.card.getBoundingClientRect();
+      const midX = window.innerWidth / 2;
+      const midY = window.innerHeight / 2;
+      const isRight = (rect.left + rect.width / 2) >= midX;
+      const isBottom = (rect.top + rect.height / 2) >= midY;
+
+      if (isBottom && isRight) this.currentCorner = 'bottom-right';
+      else if (isBottom && !isRight) this.currentCorner = 'bottom-left';
+      else if (!isBottom && isRight) this.currentCorner = 'top-right';
+      else this.currentCorner = 'top-left';
+    };
+
+    this.card.addEventListener('pointerdown', (e: PointerEvent) => {
+      // Only drag when clicking the topbar or empty non-interactive header areas
+      const target = e.target as HTMLElement;
+      if (!target.closest('.ib-card-topbar') || target.closest('button') || target.closest('.ib-topbar-actions')) {
+        return;
+      }
+      if (e.button !== 0) return;
+
+      this.isDragging = true;
+      this.dragStartX = e.clientX;
+      this.dragStartY = e.clientY;
+
+      const rect = this.card.getBoundingClientRect();
+      this.cardStartX = rect.left;
+      this.cardStartY = rect.top;
+
+      window.addEventListener('pointermove', onPointerMove, { capture: true });
+      window.addEventListener('pointerup', onPointerUp, { capture: true });
+      e.preventDefault();
+    });
   }
 
   private render(): void {
@@ -157,7 +240,9 @@ export class TooltipCard {
           ${idDisplay}
         </div>
         <div class="ib-topbar-actions">
-          <button class="ib-icon-btn ib-pin-btn ${this.isPinned ? 'ib-active' : ''}" title="Pin Tooltip">📌</button>
+          <button class="ib-icon-btn ib-pin-btn ${this.isPinned ? 'ib-active' : ''}" title="${this.isPinned ? 'Locked (Click to unlock)' : 'Click to lock/freeze info'}">
+            ${this.isPinned ? '🔒' : '🔓'}
+          </button>
         </div>
       </div>
 

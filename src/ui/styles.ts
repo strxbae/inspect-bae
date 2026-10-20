@@ -130,7 +130,7 @@ export const SHADOW_STYLES = `
 .ib-tooltip-card {
   position: fixed;
   width: 380px;
-  max-height: 490px;
+  max-height: 520px;
   background: #0e0e11;
   color: #e4e4e7;
   border-radius: 14px;
@@ -143,18 +143,21 @@ export const SHADOW_STYLES = `
   font-size: 12px;
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  transition: opacity 0.15s ease, transform 0.15s ease;
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
   animation: ib-pop 0.16s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-@keyframes ib-pop {
-  from { opacity: 0; transform: scale(0.97) translateY(4px); }
-  to { opacity: 1; transform: scale(1) translateY(0); }
+.ib-pinned {
+  border-color: #6366f1 !important;
+  box-shadow: 0 20px 40px -10px rgba(99, 102, 241, 0.35), 0 0 0 2px #6366f1 !important;
 }
 
-.ib-pinned {
-  border-color: #6366f1;
-  box-shadow: 0 20px 40px -10px rgba(99, 102, 241, 0.3), 0 0 0 1px #6366f1;
+.ib-card-topbar {
+  cursor: grab;
+}
+
+.ib-card-topbar:active {
+  cursor: grabbing;
 }
 
 /* Topbar */

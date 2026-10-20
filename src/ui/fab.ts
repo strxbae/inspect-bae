@@ -94,8 +94,10 @@ export class FABManager {
       window.removeEventListener('pointermove', onPointerMove, { capture: true });
       window.removeEventListener('pointerup', onPointerUp, { capture: true });
 
-      // If user didn't drag more than 3px, treat as click toggle
-      if (!this.hasMoved) {
+      // If moved, snap to nearest corner!
+      if (this.hasMoved) {
+        this.snapToCorner();
+      } else {
         this.toggle();
       }
     };
@@ -107,6 +109,25 @@ export class FABManager {
         // Handled in pointerup, or direct fallback
       }
     });
+  }
+
+  private snapToCorner(): void {
+    const pad = 24;
+    const rect = this.fab.getBoundingClientRect();
+    const midX = window.innerWidth / 2;
+    const midY = window.innerHeight / 2;
+    const isRight = (rect.left + rect.width / 2) >= midX;
+    const isBottom = (rect.top + rect.height / 2) >= midY;
+
+    const targetX = isRight ? (window.innerWidth - (this.fab.offsetWidth || 52) - pad) : pad;
+    const targetY = isBottom ? (window.innerHeight - (this.fab.offsetHeight || 52) - pad) : pad;
+
+    this.fab.style.transition = 'left 0.25s cubic-bezier(0.16, 1, 0.3, 1), top 0.25s cubic-bezier(0.16, 1, 0.3, 1)';
+    this.fab.style.left = `${targetX}px`;
+    this.fab.style.top = `${targetY}px`;
+    setTimeout(() => {
+      this.fab.style.transition = '';
+    }, 260);
   }
 
   private toggle(): void {
