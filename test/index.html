@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>InspectBae Demo Testpage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --primary: #6366f1;
+      --primary-hover: #4f46e5;
+      --secondary: #ec4899;
+      --background: #09090b;
+      --foreground: #fafafa;
+      --card-bg: #18181b;
+      --card-border: #27272a;
+      --radius-lg: 12px;
+      --radius-full: 9999px;
+      --shadow-glow: 0 0 25px rgba(99, 102, 241, 0.35);
+      --font-heading: 'Plus Jakarta Sans', sans-serif;
+      --font-code: 'JetBrains Mono', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--background);
+      color: var(--foreground);
+      font-family: var(--font-heading);
+      min-height: 100vh;
+      padding: 40px 20px;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    /* Simulated Tailwind Utility Styles for Testpage */
+    .flex { display: flex; }
+    .flex-col { flex-direction: column; }
+    .items-center { align-items: center; }
+    .justify-between { justify-content: space-between; }
+    .gap-4 { gap: 16px; }
+    .gap-6 { gap: 24px; }
+    .p-6 { padding: 24px; }
+    .p-8 { padding: 32px; }
+    .m-4 { margin: 16px; }
+    .rounded-xl { border-radius: 12px; }
+    .rounded-2xl { border-radius: 16px; }
+    .rounded-full { border-radius: 9999px; }
+    .shadow-xl { box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.4), 0 8px 10px -6px rgba(0, 0, 0, 0.4); }
+    .shadow-lg { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3); }
+    .bg-indigo-600 { background-color: #4f46e5; }
+    .bg-zinc-900 { background-color: #18181b; }
+    .border { border-width: 1px; border-style: solid; }
+    .border-zinc-800 { border-color: #27272a; }
+    .text-white { color: #ffffff; }
+    .text-zinc-400 { color: #a1a1aa; }
+    .text-indigo-400 { color: #818cf8; }
+    .font-bold { font-weight: 700; }
+    .text-2xl { font-size: 24px; line-height: 32px; }
+    .text-sm { font-size: 14px; line-height: 20px; }
+
+    header {
+      margin-bottom: 40px;
+      text-align: center;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      background: rgba(99, 102, 241, 0.15);
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      color: var(--primary);
+      border-radius: var(--radius-full);
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+
+    h1 {
+      font-size: 38px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 12px;
+      background: linear-gradient(135deg, #ffffff 0%, #a1a1aa 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    p.subtitle {
+      color: #a1a1aa;
+      font-size: 16px;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .grid-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+      margin-bottom: 40px;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+
+    .card:hover {
+      border-color: #3f3f46;
+    }
+
+    .btn-primary {
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: var(--shadow-glow);
+      transition: opacity 0.2s;
+    }
+
+    .btn-primary:hover {
+      background-color: var(--primary-hover);
+    }
+
+    /* Radix UI component mock */
+    .radix-dialog-mock {
+      background: #121215;
+      border: 1px solid #3f3f46;
+      border-radius: 12px;
+      padding: 20px;
+    }
+
+    .tab-list {
+      display: flex;
+      gap: 8px;
+      border-bottom: 1px solid #27272a;
+      padding-bottom: 8px;
+    }
+
+    .tab-trigger {
+      padding: 6px 14px;
+      background: transparent;
+      border: none;
+      color: #a1a1aa;
+      font-size: 13px;
+      font-weight: 600;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .tab-trigger[data-state="active"] {
+      background: rgba(99, 102, 241, 0.2);
+      color: #818cf8;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="hero-badge">
+        <span>✨ Test Page</span>
+      </div>
+      <h1>InspectBae Verification Page</h1>
+      <p class="subtitle">
+        Hover over the elements below to verify Tailwind detection, Radix attributes, React Fiber simulation, and CSS variables.
+      </p>
+    </header>
+
+    <div class="grid-cards">
+      <!-- 1. Tailwind & Box Model Card -->
+      <div id="tailwind-test-card" class="card flex flex-col gap-4 p-6 rounded-2xl shadow-xl bg-zinc-900 border border-zinc-800">
+        <h3 class="text-white font-bold text-2xl">Tailwind & Box Model</h3>
+        <p class="text-zinc-400 text-sm">
+          This card has utility classes like <code>bg-zinc-900</code>, <code>p-6</code>, <code>rounded-2xl</code>, and <code>shadow-xl</code>.
+        </p>
+        <div class="flex items-center justify-between">
+          <span class="text-indigo-400 font-bold">Interactive Element</span>
+          <button id="demo-tw-btn" class="bg-indigo-600 text-white rounded-xl p-6 font-bold shadow-lg" style="margin: 12px; padding: 12px 24px;">
+            Tailwind Button
+          </button>
+        </div>
+      </div>
+
+      <!-- 2. Radix UI Mock Component -->
+      <div id="radix-test-dialog" class="card radix-dialog-mock" data-state="open" role="dialog" aria-modal="true" data-radix-dialog-content="">
+        <h3 style="color: #fafafa; font-size: 20px; margin-bottom: 8px;">Radix UI Dialog</h3>
+        <p style="color: #a1a1aa; font-size: 13px; margin-bottom: 16px;">
+          Contains <code>data-state="open"</code> and <code>data-radix-dialog-content</code> attributes.
+        </p>
+        <div class="tab-list" role="tablist" data-orientation="horizontal">
+          <button class="tab-trigger" role="tab" data-state="active" data-radix-collection-item="">Overview</button>
+          <button class="tab-trigger" role="tab" data-state="inactive" data-radix-collection-item="">Settings</button>
+        </div>
+      </div>
+
+      <!-- 3. React Fiber Simulation Card -->
+      <div id="react-test-card" class="card" style="border-radius: var(--radius-lg); background: var(--card-bg);">
+        <h3 style="color: #fafafa; font-size: 20px; margin-bottom: 8px;">React Component Tree</h3>
+        <p style="color: #a1a1aa; font-size: 13px; margin-bottom: 16px;">
+          Mocked with <code>__reactFiber$</code> to simulate a real React 18 component instance: <code>&lt;UserProfileCard&gt;</code>.
+        </p>
+        <button id="react-btn" class="btn-primary" style="background-color: var(--primary);">
+          React Button
+        </button>
+      </div>
+
+      <!-- 4. CSS Custom Properties / Tokens -->
+      <div id="tokens-test-card" class="card" style="background-color: var(--card-bg); border-color: var(--primary); box-shadow: var(--shadow-glow);">
+        <h3 style="color: var(--primary); font-size: 20px; margin-bottom: 8px;">CSS Design Tokens</h3>
+        <p style="color: #a1a1aa; font-size: 13px;">
+          Uses <code>var(--primary)</code>, <code>var(--card-bg)</code>, and <code>var(--shadow-glow)</code>.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Script to simulate React Fiber instances for testing -->
+  <script>
+    window.addEventListener('DOMContentLoaded', () => {
+      const reactCard = document.getElementById('react-test-card');
+      const reactBtn = document.getElementById('react-btn');
+
+      if (reactCard) {
+        // Simulate React 18 Fiber object on DOM node
+        reactCard.__reactFiber$demo = {
+          type: function UserProfileCard() {},
+          memoizedProps: { userId: 'usr_123', plan: 'pro', role: 'admin' },
+          return: {
+            type: function Dashboard() {},
+            return: {
+              type: function App() {},
+              return: null
+            }
+          }
+        };
+      }
+
+      if (reactBtn) {
+        reactBtn.__reactFiber$demo = {
+          type: function ActionButton() {},
+          memoizedProps: { variant: 'primary', onClick: () => {} },
+          return: reactCard ? reactCard.__reactFiber$demo : null
+        };
+      }
+    });
+  </script>
+
+  <!-- Auto-inject extension build for standalone testing if needed -->
+  <script src="../dist/content.js"></script>
+</body>
+</html>

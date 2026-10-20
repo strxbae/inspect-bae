@@ -1,0 +1,27 @@
+{
+  "name": "inspect-bae",
+  "version": "1.0.0",
+  "description": "InspectBae - Modern developer inspection overlay for Chrome & Edge with framework & token reverse-engineering",
+  "main": "dist/background.js",
+  "scripts": {
+    "build": "node build.js",
+    "watch": "node build.js --watch",
+    "test": "node test/verify-build.js"
+  },
+  "keywords": [
+    "chrome-extension",
+    "devtools",
+    "inspector",
+    "tailwind",
+    "radix-ui",
+    "react",
+    "css-variables"
+  ],
+  "author": "InspectBae Team",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/chrome": "^0.3.5",
+    "esbuild": "^0.25.0",
+    "typescript": "^5.8.2"
+  }
+}
