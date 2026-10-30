@@ -129,8 +129,8 @@ export const SHADOW_STYLES = `
 /* FLOATING TOOLTIP CARD */
 .ib-tooltip-card {
   position: fixed;
-  width: 380px;
-  max-height: 520px;
+  width: 390px;
+  max-height: 560px;
   background: #0e0e11;
   color: #e4e4e7;
   border-radius: 14px;
@@ -138,6 +138,7 @@ export const SHADOW_STYLES = `
   box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.06);
   z-index: 2147483646;
   pointer-events: auto;
+  display: flex;
   flex-direction: column;
   overflow: hidden;
   font-size: 12px;
@@ -597,8 +598,247 @@ export const SHADOW_STYLES = `
 .ib-copy-toolbar {
   display: flex;
   gap: 6px;
-  padding-top: 4px;
+  padding: 10px 14px;
+  background: #141418;
   border-top: 1px solid #1f1f23;
+  flex-shrink: 0;
+}
+
+/* Mode Tabs */
+.ib-mode-tabs {
+  display: flex;
+  background: #141418;
+  border-bottom: 1px solid #1f1f23;
+  padding: 4px 10px;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.ib-tab-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 6px 10px;
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  color: #a1a1aa;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.ib-tab-btn:hover {
+  color: #fafafa;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.ib-tab-btn.ib-tab-active {
+  color: #ffffff;
+  background: #27272a;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.ib-tab-badge {
+  background: #6366f1;
+  color: #ffffff;
+  font-size: 9px;
+  font-weight: 700;
+  padding: 1px 5px;
+  border-radius: 9999px;
+  line-height: 1;
+}
+
+/* Custom Values Editor */
+.ib-custom-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.ib-custom-status-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #141418;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid #1f1f23;
+}
+
+.ib-custom-status-text {
+  font-size: 11px;
+  color: #a1a1aa;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ib-live-indicator {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #10b981;
+  box-shadow: 0 0 6px #10b981;
+}
+
+.ib-btn-reset-all {
+  background: transparent;
+  border: 1px solid rgba(244, 63, 94, 0.4);
+  color: #fb7185;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.ib-btn-reset-all:hover {
+  background: rgba(244, 63, 94, 0.15);
+  border-color: #f43f5e;
+  color: #ffffff;
+}
+
+.ib-custom-section {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.ib-custom-sec-title {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #71717a;
+  padding-left: 2px;
+}
+
+.ib-custom-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  background: #141418;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #1f1f23;
+}
+
+.ib-field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.ib-field-group.ib-col-span-2 {
+  grid-column: span 2;
+}
+
+.ib-field-label {
+  font-size: 10px;
+  color: #858592;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 500;
+}
+
+.ib-changed-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #818cf8;
+  box-shadow: 0 0 6px #818cf8;
+  display: inline-block;
+}
+
+.ib-input {
+  background: #09090b;
+  border: 1px solid #27272a;
+  border-radius: 6px;
+  color: #fafafa;
+  font-size: 11px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  padding: 6px 8px;
+  width: 100%;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s, background-color 0.15s;
+}
+
+.ib-input:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+}
+
+.ib-input.ib-input-changed {
+  border-color: #6366f1;
+  background: rgba(99, 102, 241, 0.08);
+}
+
+.ib-color-picker-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ib-color-input-native {
+  -webkit-appearance: none;
+  border: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  cursor: pointer;
+  background: transparent;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.ib-color-input-native::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+.ib-color-input-native::-webkit-color-swatch {
+  border: 1px solid #3f3f46;
+  border-radius: 5px;
+}
+
+.ib-select {
+  background: #09090b;
+  border: 1px solid #27272a;
+  border-radius: 6px;
+  color: #fafafa;
+  font-size: 11px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  padding: 6px 8px;
+  width: 100%;
+  outline: none;
+  cursor: pointer;
+}
+
+.ib-select:focus {
+  border-color: #6366f1;
+}
+
+.ib-select.ib-input-changed {
+  border-color: #6366f1;
+  background: rgba(99, 102, 241, 0.08);
+}
+
+.ib-copy-note-btn {
+  background: #4f46e5 !important;
+  color: #ffffff !important;
+  border-color: #6366f1 !important;
+  font-weight: 700 !important;
+}
+
+.ib-copy-note-btn:hover {
+  background: #4338ca !important;
+  box-shadow: 0 0 12px rgba(99, 102, 241, 0.4) !important;
 }
 
 .ib-action-btn {

@@ -40,7 +40,7 @@ import { ExtensionMessage } from './types';
     shadowRoot.appendChild(styleEl);
 
     overlayManager = new OverlayManager(shadowRoot);
-    tooltipCard = new TooltipCard(shadowRoot, handleCopy);
+    tooltipCard = new TooltipCard(shadowRoot, handleCopy, handleElementModified);
     fabManager = new FABManager(shadowRoot, toggleInspection);
 
     document.documentElement.appendChild(hostEl);
@@ -133,6 +133,16 @@ import { ExtensionMessage } from './types';
   }
 
   function handleKeyDown(e: KeyboardEvent): void {
+    const active = document.activeElement;
+    const path = e.composedPath ? e.composedPath() : [];
+    const isInputActive = path.some(node =>
+      node instanceof HTMLElement && (node.tagName === 'INPUT' || node.tagName === 'TEXTAREA' || node.tagName === 'SELECT')
+    ) || (active && (active.tagName === 'INPUT' || active.tagName === 'TEXTAREA' || active.tagName === 'SELECT'));
+
+    if (isInputActive) {
+      return;
+    }
+
     // ESC disables inspection or unpins
     if (e.key === 'Escape' && isInspectionActive) {
       if (tooltipCard && tooltipCard.getPinned()) {
@@ -145,6 +155,16 @@ import { ExtensionMessage } from './types';
     // 'p' or 'P' toggles pin when active
     if ((e.key === 'p' || e.key === 'P') && isInspectionActive) {
       if (tooltipCard) tooltipCard.togglePin();
+    }
+  }
+
+  function handleElementModified(element: HTMLElement): void {
+    if (!element || !overlayManager) return;
+    try {
+      const data = extractElementData(element);
+      overlayManager.update(element, data);
+    } catch (err) {
+      console.error('[InspectBae] Error updating overlay on modification:', err);
     }
   }
 

@@ -6,7 +6,7 @@
   "scripts": {
     "build": "node build.js",
     "watch": "node build.js --watch",
-    "test": "node test/verify-build.js"
+    "test": "node test/verify-build.js && node test/verify-custom-values.js"
   },
   "keywords": [
     "chrome-extension",

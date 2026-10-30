@@ -99,6 +99,13 @@ export interface ExtensionSettings {
   fabPosition: { x?: number; y?: number };
 }
 
+export interface StyleChangeRecord {
+  label: string;
+  cssProp: string;
+  original: string;
+  current: string;
+}
+
 export type ExtensionMessage =
   | { type: 'TOGGLE_INSPECTION'; payload?: boolean }
   | { type: 'GET_STATE' }

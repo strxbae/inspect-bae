@@ -106,7 +106,7 @@ export class FABManager {
     this.fab.addEventListener('click', (e) => {
       e.stopPropagation();
       if (!this.hasMoved) {
-        // Handled in pointerup, or direct fallback
+        this.toggle();
       }
     });
   }
