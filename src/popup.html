@@ -54,6 +54,16 @@
       border-radius: 4px;
       border: 1px solid #27272a;
     }
+    .status-hint {
+      background: rgba(245, 158, 11, 0.12);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      color: #fbbf24;
+      font-size: 11px;
+      padding: 8px 10px;
+      border-radius: 8px;
+      margin-bottom: 14px;
+      line-height: 1.4;
+    }
     .toggle-card {
       background: #18181b;
       border: 1px solid #27272a;
@@ -173,8 +183,10 @@
       <div class="logo-badge">IB</div>
       <span>InspectBae</span>
     </div>
-    <span class="version">v1.0.0</span>
+    <span class="version" id="ext-version">v1.1.0</span>
   </div>
+
+  <div id="status-hint" class="status-hint" style="display: none;"></div>
 
   <div class="toggle-card">
     <div class="toggle-info">
@@ -190,6 +202,14 @@
   <div class="features-list">
     <div class="feature-item">
       <div class="feature-dot"></div>
+      <span>Real-time live tweaks & custom values</span>
+    </div>
+    <div class="feature-item">
+      <div class="feature-dot"></div>
+      <span>1-click Markdown handover notes</span>
+    </div>
+    <div class="feature-item">
+      <div class="feature-dot"></div>
       <span>Tailwind CSS classes & rounded values</span>
     </div>
     <div class="feature-item">
@@ -199,10 +219,6 @@
     <div class="feature-item">
       <div class="feature-dot"></div>
       <span>Radix UI primitives & data-state</span>
-    </div>
-    <div class="feature-item">
-      <div class="feature-dot"></div>
-      <span>CSS Custom properties & Design Tokens</span>
     </div>
     <div class="feature-item">
       <div class="feature-dot"></div>
