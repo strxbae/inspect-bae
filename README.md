@@ -1,160 +1,237 @@
 # 🔍 InspectBae
 
-> **The modern, high-precision visual DevTools overlay for Chrome and Microsoft Edge (Manifest V3).**  
-> Reverse-engineer any web page: inspect Box Model overlays, React Fiber component hierarchies, Radix UI primitives, Tailwind CSS utility classes, and CSS custom properties (design tokens) inside an isolated Shadow DOM.
+<p align="center">
+  <img src="src/manifest.json" width="0" alt="" />
+  <strong>The modern visual DevTools & real-time design tweaker for Chromium browsers (Manifest V3).</strong><br>
+  Reverse-engineer components, tweak CSS live in real-time, and generate clean Markdown handover notes for frontend developers.
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Manifest-V3-blue.svg" alt="Manifest V3" />
+  <img src="https://img.shields.io/badge/Chrome-Supported-success.svg" alt="Chrome" />
+  <img src="https://img.shields.io/badge/Edge-Supported-blue.svg" alt="Edge" />
+  <img src="https://img.shields.io/badge/Arc-Supported-purple.svg" alt="Arc" />
+  <img src="https://img.shields.io/badge/Brave-Supported-orange.svg" alt="Brave" />
+  <img src="https://img.shields.io/badge/TypeScript-5.8-3178c6.svg" alt="TypeScript" />
+  <img src="https://img.shields.io/badge/License-MIT-green.svg" alt="License" />
+</p>
 
 ---
 
-## ✨ Features
+## ✨ Highlights & Features
 
-- **🎯 Floating Action Button (FAB)**
-  - Positioned non-intrusively in the viewport.
-  - Smoothly draggable to any position with automatic edge clamping.
-  - Single-click toggle to enter and exit **Inspection Mode** (or press `Esc`).
-  - Active pulse indicator and glowing accent state.
+### ⚡ 1. Real-Time Custom Values (Live Tweaks)
+Tweak any element's design directly on the live webpage without touching DevTools console:
+- **Colors**: Text Color, Background Color, and Border Color with 2-way sync native color pickers + HEX/RGB text inputs.
+- **Typography**: Modify `font-size`, `font-weight`, `line-height`, and `letter-spacing`.
+- **Dimensions & Layout**: Adjust `width`, `height`, `gap`, and `display` (flex, grid, block, inline-flex).
+- **Spacing**: Test different `padding` and `margin` values with shorthand support.
+- **Borders & Effects**: Live tweak `border-radius`, `border`, and `opacity`.
+- **Live Sync**: Changes are applied instantly to the DOM (`!important` inline style), and the Box Model overlay resizes live in real-time.
+- **↺ Reset All**: Revert all tweaks back to the element's original styles in one click.
 
-- **📐 Box Model Visualizer & Highlight Overlay**
-  - Instant high-precision overlays showing 4 layers:
-    - **Margin**: Dashed amber/orange box (`rgba(246, 178, 107, 0.35)`)
-    - **Border**: Solid yellow box (`rgba(255, 229, 153, 0.35)`)
-    - **Padding**: Dashed green box (`rgba(182, 215, 168, 0.4)`)
-    - **Content**: Blue accent outline (`#3b82f6`)
-  - Sub-pixel dimension indicators matching browser computed styles.
+### 📝 2. Instant Markdown Handover Notes (`Copy Note`)
+Never manually type style change tickets again. InspectBae automatically tracks all modifications from baseline to current values:
+- Click **Copy Note** at the bottom toolbar.
+- Copies a clean, structured **Markdown** handover note ready to paste into **Slack, Notion, Jira, Linear, or GitHub Issues**.
+- Includes:
+  - Target element selector (`<button> #checkout-btn .btn.btn-primary`)
+  - React Component name & component hierarchy tree
+  - Radix UI primitive & state
+  - Clear diff of modified properties (`14px` ➔ `18px`)
+  - Copy-paste ready CSS snippet block
 
-- **🛡️ Isolated Shadow DOM Architecture**
-  - Uses native Web Components `ShadowRoot` with `mode: 'open'`.
-  - Extension styles **never leak** into host web pages.
-  - Host website CSS **never pollutes** or breaks the inspector UI.
+### 🎯 3. Floating Action Button (FAB) & Corner Docking
+- Lightweight floating trigger button on the screen.
+- Draggable with smooth inertia and automatic viewport edge clamping.
+- Drops and docks cleanly into the nearest corner (`bottom-right`, `bottom-left`, `top-right`, `top-left`).
+- Click FAB or press `Esc` to toggle inspection mode on/off.
 
-- **🧩 Framework & Library Reverse Engineering**
-  - **React 16/17/18/19 Detection**: Traverses internal DOM properties (`__reactFiber$`, `__reactInternalInstance$`) to extract the exact React Component name and parent component hierarchy (e.g. `<UserProfileCard>` &rarr; `<Dashboard>` &rarr; `<App>`).
-  - **Radix UI Detection**: Dissects Radix UI primitives (`Dialog`, `DropdownMenu`, `Tooltip`, `Tabs`, `Accordion`, `Popover`, `Select`) by analyzing `data-radix-*`, `data-state`, `data-orientation`, `data-side`, and ARIA roles.
-  - **Tailwind CSS Utility Parsing**: Scans element classes against the Tailwind CSS design system (colors, spacing, flexbox/grid, typography, borders, shadows, rounded scales).
-  - **CSS Custom Properties & Design Tokens**: Resolves variables (`var(--primary)`, `var(--radius)`, `var(--ds-*)`, `var(--tw-*)`) from matched stylesheet rules, displaying both the token name and computed runtime value.
+### 📐 4. High-Precision Box Model Visualizer
+- 4-layer visual overlay matching Chrome DevTools:
+  - **Margin**: Dashed amber box (`rgba(246, 178, 107, 0.35)`)
+  - **Border**: Solid yellow box (`rgba(255, 229, 153, 0.35)`)
+  - **Padding**: Dashed green box (`rgba(182, 215, 168, 0.4)`)
+  - **Content**: Blue accent outline (`#3b82f6`)
+- Sub-pixel dimension indicators matching browser computed styles.
 
-- **📋 Quick Copy Tools**
-  - **Copy CSS**: Generates clean, ready-to-use CSS rules (dimensions, typography, colors, borders, shadows, box model).
-  - **Copy Tailwind**: Copies all matched Tailwind utility classes in one click.
-  - **Copy Color**: Copies HEX / RGB values.
-  - **Copy Component**: Copies the detected React component name.
-  - **Pin Mode (`P`)**: Pins the tooltip card in place to easily interact with copy buttons without losing focus.
+### 🧩 5. Framework & Token Reverse Engineering
+- **React 16/17/18/19 Detection**: Traverses internal Fiber nodes (`__reactFiber$`) to extract the exact React Component name and parent hierarchy (e.g. `<UserProfileCard>` ➔ `<Dashboard>` ➔ `<App>`).
+- **Radix UI Detection**: Identifies Radix primitives (`Dialog`, `DropdownMenu`, `Tooltip`, `Tabs`, `Popover`, `Select`) and runtime states (`[data-state="open"]`).
+- **Tailwind CSS Utility Parsing**: Categorizes and displays matched Tailwind classes (colors, spacing, layout, typography, borders).
+- **CSS Variables & Tokens**: Resolves variables (`var(--primary)`, `var(--radius)`, `var(--tw-*)`) from stylesheets showing runtime computed values.
+
+### 🛡️ 6. Zero-Leak Shadow DOM Architecture
+- All extension UI runs inside an isolated `ShadowRoot` (`mode: 'open'`).
+- Extension styles never leak into the host page, and host CSS never breaks InspectBae.
 
 ---
 
 ## 🚀 Installation Guide
 
-### Prerequisites
-- Node.js (v18+)
-- Google Chrome or Microsoft Edge
+InspectBae works on all Chromium-based browsers: **Google Chrome, Microsoft Edge, Arc, Brave, and Opera**.
 
-### 1. Build the Extension
-In your terminal, navigate to the project directory and build the extension:
+### Option A: Quick Install via Pre-built ZIP (No Node.js Required)
 
-```bash
-cd /Users/macmini/vibecoder/inspect-bae
-npm install
-npm run build
+> **Best for Designers, Product Managers, and Non-Developers.**
+
+1. **Download the Extension:**
+   - Download [`inspect-bae-extension.zip`](./inspect-bae-extension.zip) from this repository or from the [Releases](https://github.com/strxbae/inspect-bae/releases) page.
+2. **Extract the ZIP:**
+   - Unzip `inspect-bae-extension.zip` on your computer (you will get a folder containing `manifest.json`, `dist/`, etc.).
+3. **Load in your Browser:**
+   - Follow the browser-specific steps below.
+
+---
+
+### Option B: Build from Source (For Developers)
+
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/strxbae/inspect-bae.git
+   cd inspect-bae
+   ```
+2. **Install dependencies and build:**
+   ```bash
+   npm install
+   npm run build
+   ```
+   This generates the production-ready bundle in the `dist/` directory.
+
+---
+
+## 🌐 Loading Unpacked Extension in Browsers
+
+### 🔵 Google Chrome
+1. Open Chrome and go to `chrome://extensions/`
+2. Enable **Developer mode** using the toggle switch in the top-right corner.
+3. Click the **Load unpacked** button in the top-left corner.
+4. Select the **`dist`** folder (if building from source) or the unzipped folder.
+5. InspectBae is now installed! Click the puzzle icon in Chrome toolbar and **pin** InspectBae.
+
+### 🌊 Microsoft Edge
+1. Open Edge and navigate to `edge://extensions/`
+2. Turn on **Developer mode** in the left sidebar.
+3. Click **Load unpacked** at the top.
+4. Select the **`dist`** folder.
+5. Pin InspectBae to your toolbar.
+
+### 🎨 Arc Browser
+1. Open Arc and navigate to `arc://extensions/` (or press `Cmd+T` and type `Extensions`).
+2. Toggle **Developer mode** in the top-right.
+3. Click **Load unpacked** and select the **`dist`** folder.
+4. InspectBae will be available in your Arc extensions bar.
+
+### 🦁 Brave Browser
+1. Open Brave and go to `brave://extensions/`
+2. Enable **Developer mode** in the top-right corner.
+3. Click **Load unpacked** and select the **`dist`** folder.
+
+---
+
+## 🎮 How to Use & Workflow
+
+### 1. Start Inspecting
+- Click the **InspectBae FAB button** on the bottom-right of any webpage, or click the extension icon in your toolbar, or press **`Cmd+Shift+X`** (macOS) / **`Ctrl+Shift+X`** (Windows).
+- Hover over any element to view real-time box model overlays, typography, colors, and framework components.
+
+### 2. Lock / Freeze Element Focus
+- **Click** on the element you want to inspect (or press **`P`**).
+- The inspector card locks onto that element so you can scroll through properties and click copy buttons without losing focus.
+
+### 3. Tweak Values in Real-Time
+- Click the **⚡ Custom Values** tab at the top of the card.
+- Adjust **Font Size**, **Height**, **Width**, **Gap**, **Padding**, **Border Radius**, or pick new **Colors**.
+- Watch the webpage update live immediately!
+- If you want to start over, click **↺ Reset All**.
+
+### 4. Export Handover Notes to Frontend Devs
+- Click the **📝 Copy Note** button at the bottom of the card.
+- Paste the generated Markdown directly into your team's chat or ticket.
+
+---
+
+## 📋 Sample Handover Note Output
+
+Here is what gets copied when you click **Copy Note**:
+
+```markdown
+### 📝 Design Tweak Handover Notes
+
+**Target Element:** `<button> #sample-btn .btn.btn-primary`
+**React Component:** `<CheckoutButton>`
+
+---
+
+#### 🔄 Modified Properties (5)
+
+- **Font Size** (`font-size`): `14px` ➔ **`18px`**
+- **Height** (`height`): `40px` ➔ **`48px`**
+- **Gap** (`gap`): `8px` ➔ **`16px`**
+- **Background** (`background-color`): `#3b82f6` ➔ **`#0f172a`**
+- **Border Radius** (`border-radius`): `8px` ➔ **`12px`**
+
+#### 📋 CSS Snippet to Apply:
+```css
+/* Applied to <button> #sample-btn .btn.btn-primary */
+font-size: 18px;
+height: 48px;
+gap: 16px;
+background-color: #0f172a;
+border-radius: 12px;
 ```
 
-This compiles TypeScript with `esbuild`, generates extension icons, and bundles the production-ready extension into the `dist/` folder:
+---
+*Exported via InspectBae DevTools*
+```
+
+---
+
+## ⌨️ Keyboard Shortcuts
+
+| Shortcut | Action |
+| :--- | :--- |
+| **`Cmd + Shift + X`** (macOS) / **`Ctrl + Shift + X`** | Toggle Inspection Mode |
+| **`P`** | Lock / Pin current element card |
+| **`Esc`** | Unlock pinned element or exit inspection mode |
+| **Click Element** | Freeze & lock inspection onto element |
+| **Drag Card Topbar** | Move card anywhere on viewport (snaps to corner) |
+
+*(Note: Shortcuts like `P` and `Esc` automatically suspend when typing into input fields inside Custom Values mode).*
+
+---
+
+## 🧪 Development & Testing
+
+Run automated build and contract verification tests:
+
+```bash
+# Run build & verification test suite
+npm test
+
+# Run build in watch mode for active development
+npm run watch
+```
+
+You can also test directly by opening `test/index.html` or `test/e2e-test.html` in your browser.
+
+---
+
+## 📁 Repository Structure
 
 ```text
-dist/
-├── manifest.json
-├── content.js
-├── background.js
-├── popup.html
-├── popup.js
-└── icons/
-    ├── icon16.png
-    ├── icon48.png
-    └── icon128.png
-```
-
----
-
-### 2. Install on Google Chrome
-
-1. Open **Google Chrome**.
-2. Navigate to `chrome://extensions/` in the URL bar.
-3. In the top-right corner, turn on **Developer mode**.
-4. Click the **Load unpacked** button in the top-left corner.
-5. In the file picker, select the **`dist`** directory inside `inspect-bae`:
-   ```
-   /Users/macmini/vibecoder/inspect-bae/dist
-   ```
-6. InspectBae will now appear in your extensions list! Pin it to your Chrome toolbar for easy access.
-
----
-
-### 3. Install on Microsoft Edge
-
-1. Open **Microsoft Edge**.
-2. Navigate to `edge://extensions/` in the URL bar.
-3. In the left sidebar, turn on **Developer mode**.
-4. Click **Load unpacked** (top of the page or sidebar).
-5. Select the **`dist`** folder:
-   ```
-   /Users/macmini/vibecoder/inspect-bae/dist
-   ```
-6. InspectBae is now active on Microsoft Edge.
-
----
-
-## 🎮 How to Use
-
-1. **Activate Inspection**:
-   - Click the **FAB** (floating circular button on the bottom right).
-   - Or click the **InspectBae icon** in your browser toolbar popup.
-   - Or press the default shortcut (`Cmd+Shift+X` on macOS, `Ctrl+Shift+X` on Windows/Linux).
-2. **Inspect Any Element**:
-   - Hover over headers, buttons, cards, or dialogs.
-   - The Box Model overlay immediately highlights margins, paddings, and borders.
-   - The floating tooltip card displays typography, colors, framework tags, and CSS variables.
-3. **Pin & Copy**:
-   - Press **`P`** on your keyboard (or click the 📌 pin button) to lock the tooltip card in place.
-   - Click **Copy CSS**, **Tailwind**, **Color**, or **Component** to copy code straight to your clipboard.
-4. **Deactivate**:
-   - Press **`Esc`** or click the FAB again.
-
----
-
-## 🧪 Testing & Verification
-
-A comprehensive demo page (`test/index.html`) is included in the repository featuring:
-- Tailwind CSS utility classes (`bg-zinc-900`, `p-6`, `rounded-2xl`, `shadow-xl`)
-- Radix UI attributes (`data-state="open"`, `data-radix-dialog-content`, `data-radix-collection-item`)
-- Simulated React 18 component tree via `__reactFiber$` (`<UserProfileCard>`, `<ActionButton>`)
-- CSS custom properties (`var(--primary)`, `var(--card-bg)`, `var(--shadow-glow)`)
-
-To run the automated verification suite:
-
-```bash
-npm test
-```
-
-To view the demo test page in your browser:
-Open `test/index.html` directly in Chrome or Edge:
-```
-file:///Users/macmini/vibecoder/inspect-bae/test/index.html
-```
-
----
-
-## 📁 Project Structure
-
-```
 inspect-bae/
+├── dist/                          # Compiled extension ready for browser loading
 ├── src/
 │   ├── manifest.json              # Manifest V3 extension configuration
-│   ├── types.ts                   # TypeScript interfaces and data models
+│   ├── types.ts                   # TypeScript interfaces & change record types
 │   ├── background.ts              # Service worker handling commands and tab badges
-│   ├── content.ts                 # Main content script entry point & Shadow DOM host
+│   ├── content.ts                 # Content script entry & isolated Shadow DOM host
 │   ├── popup.html                 # Extension toolbar popup interface
-│   ├── popup.ts                   # Popup controller script
+│   ├── popup.ts                   # Toolbar popup controller
 │   ├── engine/
-│   │   ├── inspector.ts           # Element metrics and style extraction engine
-│   │   ├── color-parser.ts        # Color conversions, alpha, and Tailwind palette matcher
+│   │   ├── inspector.ts           # Box model, metrics & style extraction engine
+│   │   ├── color-parser.ts        # Color parser, HEX/RGB/HSL & Tailwind palette matcher
 │   │   ├── react-detector.ts      # React Fiber (__reactFiber$) tree reverse-engineering
 │   │   ├── radix-detector.ts      # Radix UI primitives and state detection
 │   │   ├── tailwind-detector.ts   # Tailwind CSS utility class classifier
@@ -162,20 +239,21 @@ inspect-bae/
 │   └── ui/
 │       ├── fab.ts                 # Draggable, interactive Floating Action Button
 │       ├── overlay.ts             # 4-layer box model visualizer (Margin/Border/Padding)
-│       ├── tooltip-card.ts        # Inspection tooltip card with copy actions
-│       └── styles.ts              # Isolated CSS styles injected into ShadowRoot
+│       ├── tooltip-card.ts        # Card UI with Inspect & Custom Values tabs
+│       └── styles.ts              # Isolated CSS injected into ShadowRoot
 ├── test/
-│   ├── index.html                 # Demo test page
-│   └── verify-build.js            # Automated build & artifact verification script
+│   ├── index.html                 # Playground demo page
+│   ├── e2e-test.html              # End-to-end integration test page
+│   ├── verify-build.js            # Build & Manifest verification
+│   └── verify-custom-values.js    # Custom values & Markdown note verification
+├── inspect-bae-extension.zip      # Portable pre-built ZIP bundle for direct install
 ├── generate-icons.js              # Standalone Node.js PNG icon generator
-├── build.js                       # High-performance esbuild bundle runner
-├── tsconfig.json                  # TypeScript compiler settings
-├── package.json                   # Project scripts and dependencies
-└── README.md                      # Documentation & installation instructions
+├── build.js                       # High-performance esbuild bundler
+└── package.json                   # Project configuration & scripts
 ```
 
 ---
 
 ## 📄 License
 
-MIT © 2026 InspectBae Team
+MIT © 2026 [InspectBae Team](https://github.com/strxbae/inspect-bae)
