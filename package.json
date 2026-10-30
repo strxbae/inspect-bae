@@ -1,6 +1,6 @@
 {
   "name": "inspect-bae",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "InspectBae - Modern developer inspection overlay for Chrome & Edge with framework & token reverse-engineering",
   "main": "dist/background.js",
   "scripts": {

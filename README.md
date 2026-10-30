@@ -8,13 +8,25 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/Manifest-V3-blue.svg" alt="Manifest V3" />
+  <img src="https://img.shields.io/badge/Version-v1.1.0-6366f1.svg" alt="Version" />
   <img src="https://img.shields.io/badge/Chrome-Supported-success.svg" alt="Chrome" />
   <img src="https://img.shields.io/badge/Edge-Supported-blue.svg" alt="Edge" />
   <img src="https://img.shields.io/badge/Arc-Supported-purple.svg" alt="Arc" />
   <img src="https://img.shields.io/badge/Brave-Supported-orange.svg" alt="Brave" />
-  <img src="https://img.shields.io/badge/TypeScript-5.8-3178c6.svg" alt="TypeScript" />
   <img src="https://img.shields.io/badge/License-MIT-green.svg" alt="License" />
 </p>
+
+<div align="center">
+
+### 📦 Quick Download & Install (No Build Required)
+
+[![Download Extension ZIP](https://img.shields.io/badge/⬇️_DOWNLOAD_EXTENSION_(ZIP)-v1.1.0_LATEST-6366f1?style=for-the-badge&logo=googlechrome&logoColor=white)](https://github.com/strxbae/inspect-bae/releases/download/v1.1.0/inspect-bae-extension.zip)
+
+**[👉 Direct Download (GitHub Release ZIP)](https://github.com/strxbae/inspect-bae/releases/download/v1.1.0/inspect-bae-extension.zip)** &bull; **[Alternative Mirror (Raw Main)](https://github.com/strxbae/inspect-bae/raw/main/inspect-bae-extension.zip)**
+
+*1. Download ZIP &rarr; 2. Extract folder &rarr; 3. Go to `chrome://extensions/` &rarr; Turn on "Developer mode" &rarr; Click "Load unpacked" &rarr; Done!*
+
+</div>
 
 ---
 
@@ -76,9 +88,9 @@ InspectBae works on all Chromium-based browsers: **Google Chrome, Microsoft Edge
 > **Best for Designers, Product Managers, and Non-Developers.**
 
 1. **Download the Extension:**
-   - Download [`inspect-bae-extension.zip`](./inspect-bae-extension.zip) from this repository or from the [Releases](https://github.com/strxbae/inspect-bae/releases) page.
+   - Click to download: **[inspect-bae-extension.zip (v1.1.0)](https://github.com/strxbae/inspect-bae/releases/download/v1.1.0/inspect-bae-extension.zip)** (or [direct mirror](https://github.com/strxbae/inspect-bae/raw/main/inspect-bae-extension.zip)).
 2. **Extract the ZIP:**
-   - Unzip `inspect-bae-extension.zip` on your computer (you will get a folder containing `manifest.json`, `dist/`, etc.).
+   - Unzip `inspect-bae-extension.zip` on your computer (you will get an `inspect-bae-extension` folder containing `manifest.json`, `content.js`, etc.).
 3. **Load in your Browser:**
    - Follow the browser-specific steps below.
 
