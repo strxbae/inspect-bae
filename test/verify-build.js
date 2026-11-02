@@ -36,7 +36,7 @@ console.log('✓ Validated Manifest V3 schema and properties');
 
 // 3. Check content.js bundle content
 const contentJs = fs.readFileSync(path.join(distDir, 'content.js'), 'utf8');
-assert(contentJs.includes('ib-fab'), 'content.js must contain FAB logic');
+assert(contentJs.includes('ib-close-btn'), 'content.js must contain close button logic');
 assert(contentJs.includes('ib-overlay-container'), 'content.js must contain overlay logic');
 assert(contentJs.includes('ib-tooltip-card'), 'content.js must contain tooltip logic');
 console.log('✓ Verified content.js contains all engine components');

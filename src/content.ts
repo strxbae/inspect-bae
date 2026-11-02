@@ -1,5 +1,4 @@
 import { SHADOW_STYLES } from './ui/styles';
-import { FABManager } from './ui/fab';
 import { OverlayManager } from './ui/overlay';
 import { TooltipCard } from './ui/tooltip-card';
 import { extractElementData } from './engine/inspector';
@@ -14,7 +13,6 @@ import { ExtensionMessage } from './types';
   let hoveredElement: HTMLElement | null = null;
   let hostEl: HTMLDivElement | null = null;
   let shadowRoot: ShadowRoot | null = null;
-  let fabManager: FABManager | null = null;
   let overlayManager: OverlayManager | null = null;
   let tooltipCard: TooltipCard | null = null;
 
@@ -40,26 +38,25 @@ import { ExtensionMessage } from './types';
     shadowRoot.appendChild(styleEl);
 
     overlayManager = new OverlayManager(shadowRoot);
-    tooltipCard = new TooltipCard(shadowRoot, handleCopy, handleElementModified);
-    fabManager = new FABManager(shadowRoot, toggleInspection);
+    tooltipCard = new TooltipCard(shadowRoot, handleCopy, handleElementModified, () => toggleInspection(false));
 
     document.documentElement.appendChild(hostEl);
   }
 
   function toggleInspection(forceState?: boolean): void {
     isInspectionActive = forceState !== undefined ? forceState : !isInspectionActive;
-    if (fabManager) {
-      fabManager.setActive(isInspectionActive);
-    }
 
     if (isInspectionActive) {
       enableInspectionListeners();
-      showToast('InspectBae: Inspection Mode Active');
+      showToast('InspectBae: Active (Hover any element)');
     } else {
       disableInspectionListeners();
       if (overlayManager) overlayManager.hide();
-      if (tooltipCard) tooltipCard.hide();
-      showToast('InspectBae: Inspection Mode Deactivated');
+      if (tooltipCard) {
+        tooltipCard.setPinned(false);
+        tooltipCard.hide(true);
+      }
+      showToast('InspectBae: Closed');
     }
 
     // Broadcast state to runtime/popup
@@ -143,14 +140,9 @@ import { ExtensionMessage } from './types';
       return;
     }
 
-    // ESC disables inspection or unpins
+    // ESC completely disables & closes inspection
     if (e.key === 'Escape' && isInspectionActive) {
-      if (tooltipCard && tooltipCard.getPinned()) {
-        tooltipCard.setPinned(false);
-        showToast('Element Unlocked');
-      } else {
-        toggleInspection(false);
-      }
+      toggleInspection(false);
     }
     // 'p' or 'P' toggles pin when active
     if ((e.key === 'p' || e.key === 'P') && isInspectionActive) {
@@ -224,6 +216,20 @@ import { ExtensionMessage } from './types';
     window.removeEventListener('keydown', handleKeyDown, { capture: true });
     hoveredElement = null;
   }
+
+  // Global shortcut (Cmd+Shift+X / Ctrl+Shift+X) & Window message listener for testability
+  window.addEventListener('keydown', (e: KeyboardEvent) => {
+    if ((e.metaKey || e.ctrlKey) && e.shiftKey && (e.key === 'X' || e.key === 'x')) {
+      toggleInspection();
+      e.preventDefault();
+    }
+  }, { capture: true });
+
+  window.addEventListener('message', (ev) => {
+    if (ev.data && ev.data.type === 'INSPECT_BAE_TOGGLE') {
+      toggleInspection(ev.data.payload);
+    }
+  });
 
   // Listen for messages from popup or background (if running inside Chrome extension context)
   if (typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.onMessage) {

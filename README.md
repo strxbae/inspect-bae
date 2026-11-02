@@ -53,11 +53,11 @@ Never manually type style change tickets again. InspectBae automatically tracks 
   - Clear diff of modified properties (`14px` ➔ `18px`)
   - Copy-paste ready CSS snippet block
 
-### 🎯 3. Floating Action Button (FAB) & Corner Docking
-- Lightweight floating trigger button on the screen.
-- Draggable with smooth inertia and automatic viewport edge clamping.
+### 🎯 3. Floating Tooltip & Quick Close
+- Clean topbar with explicit **Close button (`✕`)** to instantly exit inspection mode.
+- Draggable topbar with smooth inertia and viewport edge clamping.
 - Drops and docks cleanly into the nearest corner (`bottom-right`, `bottom-left`, `top-right`, `top-left`).
-- Click FAB or press `Esc` to toggle inspection mode on/off.
+- No obtrusive floating action buttons (FAB) cluttering your web pages — cleanly triggered via toolbar toggle or shortcut (`Cmd+Shift+X`).
 
 ### 📐 4. High-Precision Box Model Visualizer
 - 4-layer visual overlay matching Chrome DevTools:
@@ -144,7 +144,7 @@ InspectBae works on all Chromium-based browsers: **Google Chrome, Microsoft Edge
 ## 🎮 How to Use & Workflow
 
 ### 1. Start Inspecting
-- Click the **InspectBae FAB button** on the bottom-right of any webpage, or click the extension icon in your toolbar, or press **`Cmd+Shift+X`** (macOS) / **`Ctrl+Shift+X`** (Windows).
+- Click the **InspectBae icon** in your browser toolbar and flip the **Inspection Overlay** toggle ON, or press **`Cmd+Shift+X`** (macOS) / **`Ctrl+Shift+X`** (Windows).
 - Hover over any element to view real-time box model overlays, typography, colors, and framework components.
 
 ### 2. Lock / Freeze Element Focus
@@ -203,9 +203,10 @@ border-radius: 12px;
 
 | Shortcut | Action |
 | :--- | :--- |
-| **`Cmd + Shift + X`** (macOS) / **`Ctrl + Shift + X`** | Toggle Inspection Mode |
+| **`Cmd + Shift + X`** (macOS) / **`Ctrl + Shift + X`** | Toggle Inspection Mode On/Off |
+| **`✕` Button** | Close Inspector and quit inspection mode |
+| **`Esc`** | Exit inspection mode |
 | **`P`** | Lock / Pin current element card |
-| **`Esc`** | Unlock pinned element or exit inspection mode |
 | **Click Element** | Freeze & lock inspection onto element |
 | **Drag Card Topbar** | Move card anywhere on viewport (snaps to corner) |
 

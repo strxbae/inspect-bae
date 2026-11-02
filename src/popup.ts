@@ -93,6 +93,13 @@ async function initPopup() {
     // Fail gracefully
   }
 
+  // Listen for live state changes from the active tab or close button
+  chrome.runtime.onMessage.addListener((message: ExtensionMessage) => {
+    if (message.type === 'STATE_UPDATE' && toggle) {
+      toggle.checked = Boolean(message.payload.isEnabled);
+    }
+  });
+
   toggle?.addEventListener('change', async () => {
     const isChecked = toggle.checked;
     hideHint();

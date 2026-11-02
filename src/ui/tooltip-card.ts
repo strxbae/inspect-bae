@@ -42,6 +42,7 @@ export class TooltipCard {
   private currentTarget: HTMLElement | null = null;
   private onCopyCallback?: (text: string, label: string) => void;
   private onElementModified?: (element: HTMLElement) => void;
+  private onCloseCallback?: () => void;
   private userHasMovedCard = false;
   private currentCorner: 'bottom-right' | 'bottom-left' | 'top-right' | 'top-left' = 'bottom-right';
 
@@ -60,10 +61,12 @@ export class TooltipCard {
   constructor(
     shadowRoot: ShadowRoot,
     onCopy?: (text: string, label: string) => void,
-    onElementModified?: (element: HTMLElement) => void
+    onElementModified?: (element: HTMLElement) => void,
+    onClose?: () => void
   ) {
     this.onCopyCallback = onCopy;
     this.onElementModified = onElementModified;
+    this.onCloseCallback = onClose;
     this.card = document.createElement('div');
     this.card.className = 'ib-tooltip-card';
     this.card.style.display = 'none';
@@ -88,6 +91,14 @@ export class TooltipCard {
     }
   }
 
+  public close(): void {
+    this.setPinned(false);
+    this.hide(true);
+    if (this.onCloseCallback) {
+      this.onCloseCallback();
+    }
+  }
+
   public update(data: InspectedElementData, targetElement: HTMLElement): void {
     if (this.isPinned) return;
 
@@ -105,8 +116,8 @@ export class TooltipCard {
     this.card.style.display = 'flex';
   }
 
-  public hide(): void {
-    if (!this.isPinned) {
+  public hide(force = false): void {
+    if (force || !this.isPinned) {
       this.card.style.display = 'none';
     }
   }
@@ -258,6 +269,12 @@ export class TooltipCard {
         <div class="ib-topbar-actions">
           <button class="ib-icon-btn ib-pin-btn ${this.isPinned ? 'ib-active' : ''}" title="${this.isPinned ? 'Locked (Click to unlock)' : 'Click to lock/freeze info'}">
             ${this.isPinned ? '🔒' : '🔓'}
+          </button>
+          <button class="ib-icon-btn ib-close-btn" title="Close InspectBae (Exit Inspection)">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
           </button>
         </div>
       </div>
@@ -605,6 +622,13 @@ export class TooltipCard {
     pinBtn?.addEventListener('click', (e) => {
       e.stopPropagation();
       this.togglePin();
+    });
+
+    // Close button
+    const closeBtn = this.card.querySelector('.ib-close-btn');
+    closeBtn?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      this.close();
     });
 
     // Tab buttons

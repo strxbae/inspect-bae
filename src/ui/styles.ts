@@ -245,6 +245,19 @@ export const SHADOW_STYLES = `
   background: rgba(99, 102, 241, 0.25);
 }
 
+.ib-close-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #a1a1aa;
+}
+
+.ib-close-btn:hover {
+  background: rgba(239, 68, 68, 0.2) !important;
+  color: #f87171 !important;
+  opacity: 1;
+}
+
 /* Card Content Body */
 .ib-card-content {
   overflow-y: auto;

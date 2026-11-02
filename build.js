@@ -11,12 +11,25 @@ async function build() {
     fs.mkdirSync(distDir, { recursive: true });
   }
 
-  // 1. Generate Icons
+  // 1. Copy or generate icons
   const iconsDir = path.join(distDir, 'icons');
-  createPNG(16, path.join(iconsDir, 'icon16.png'));
-  createPNG(48, path.join(iconsDir, 'icon48.png'));
-  createPNG(128, path.join(iconsDir, 'icon128.png'));
-  console.log('✓ Generated extension icons');
+  if (!fs.existsSync(iconsDir)) {
+    fs.mkdirSync(iconsDir, { recursive: true });
+  }
+
+  const srcIconsDir = path.join(__dirname, 'src', 'icons');
+  if (fs.existsSync(path.join(srcIconsDir, 'icon16.png'))) {
+    for (const size of [16, 48, 128]) {
+      const name = `icon${size}.png`;
+      fs.copyFileSync(path.join(srcIconsDir, name), path.join(iconsDir, name));
+    }
+    console.log('✓ Copied brand extension icons from src/icons');
+  } else {
+    createPNG(16, path.join(iconsDir, 'icon16.png'));
+    createPNG(48, path.join(iconsDir, 'icon48.png'));
+    createPNG(128, path.join(iconsDir, 'icon128.png'));
+    console.log('✓ Generated fallback extension icons');
+  }
 
   // 2. Copy static files
   fs.copyFileSync(
